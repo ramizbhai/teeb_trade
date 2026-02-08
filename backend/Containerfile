@@ -1,0 +1,16 @@
+# Stage 1: Builder
+FROM rust:bookworm as builder
+WORKDIR /app
+COPY . .
+RUN cargo build --release
+
+# Stage 2: Runner
+FROM debian:bookworm-slim
+WORKDIR /app
+RUN apt-get update && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /app/target/release/teeb_trade_backend .
+# Copy history.json if it exists, or let it be created/mounted.
+# In compose we will map it. But here we can copy a default one if needed. (Optional)
+
+EXPOSE 3000
+CMD ["./teeb_trade_backend"]

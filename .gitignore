@@ -1,0 +1,8 @@
+target/
+node_modules/
+.env
+backend/history.json
+.DS_Store
+.idea/
+.vscode/
+*.swp
