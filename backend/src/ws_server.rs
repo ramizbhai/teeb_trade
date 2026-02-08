@@ -16,7 +16,8 @@ pub async fn start_ws_server(tx: broadcast::Sender<WsMessage>, history: Arc<Hist
         .and(history)
         .map(|ws: warp::ws::Ws, tx: broadcast::Sender<WsMessage>, history: Arc<HistoryManager>| {
             ws.on_upgrade(move |socket| handle_client(socket, tx, history))
-        });
+        })
+        .with(warp::cors().allow_any_origin());
 
     info!("Starting WebSocket Signal Server on 0.0.0.0:3000");
     warp::serve(routes).run(([0, 0, 0, 0], 3000)).await;

@@ -8,7 +8,7 @@ services:
     image: teeb_backend:latest
     container_name: teeb_backend
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - ./backend/history.json:/app/history.json
     environment:
@@ -26,6 +26,7 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=5173
+      - PUBLIC_BACKEND_URL=ws://172.86.117.232:3001/ws
     restart: unless-stopped
     depends_on:
       - backend

@@ -3,6 +3,7 @@
     import type { Signal, Stats, WsMessage, SignalUpdate } from '$lib/types';
     import { fade, fly, slide } from 'svelte/transition';
     import { flip } from 'svelte/animate';
+    import { env } from '$env/dynamic/public';
 
     let socket: WebSocket;
     // Active signals map: Symbol -> Signal
@@ -32,7 +33,8 @@
     });
 
     function connect() {
-        socket = new WebSocket('ws://localhost:3000/ws');
+        const wsUrl = env.PUBLIC_BACKEND_URL || 'ws://localhost:3000/ws';
+        socket = new WebSocket(wsUrl);
 
         socket.onopen = () => {
             isConnected = true;
